@@ -19,7 +19,7 @@ class GalleryViewModel: ObservableObject {
                 for item in data {
                     let element = GalleryNewslineModel(
                         id: item.key,
-                        photoURL: item.value.photoURL,
+                        photoURL: "http://dev.bgsoft.biz/task/\(item.key).jpg",
                         userName: item.value.userName,
                         userURL: item.value.userURL)
                     self.newsline.append(element)

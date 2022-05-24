@@ -10,47 +10,30 @@ import SwiftUI
 struct PresentationView: View {
     let object: GalleryNewslineModel
     
-    let height = UIScreen.main.bounds.height - 100
-    let width = UIScreen.main.bounds.width - 80
-    
     var body: some View {
-        AsyncImage(url: URL(string: "http://dev.bgsoft.biz/task/\(object.id).jpg")) { phase in
-            if let image = phase.image {
+        GeometryReader { proxy in
+            AsyncImage(url: URL(string: object.photoURL)!) { image in
                 ZStack {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(width: width, height: height)
-                        .clipped()
                     VStack {
                         Spacer()
                         Text(object.userName)
                             .font(.title)
                             .padding()
-                            .background(.white, in: RoundedRectangle(cornerRadius: 18))
+                            .background(.white, in: Capsule())
                     }
                     .padding()
-                    .frame(width: width, height: height)
                 }
-            } else if phase.error != nil {
+            } placeholder: {
                 ZStack {
-                    Text("Image upload error")
-                        .foregroundColor(.red)
-                        .frame(width: width, height: height)
-                    VStack {
-                        Spacer()
-                        Text(object.userName)
-                            .font(.title)
-                            .foregroundColor(.red)
-                            .padding()
-                    }
-                    .padding()
-                    .frame(width: width, height: height)
+                    Color.gray.opacity(0.5)
+                    ProgressView()
                 }
-            } else {
-                ProgressView()
-                    .frame(width: width, height: height)
             }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .clipped()
         }
     }
 }
@@ -59,9 +42,9 @@ struct PresentationView_Previews: PreviewProvider {
     static var previews: some View {
         PresentationView(
             object: GalleryNewslineModel(
-                id: "dldl",
+                id: "CennImb4CZA",
                 photoURL: "http://dev.bgsoft.biz/task/CennImb4CZA.jpg",
-                userName: "madam",
+                userName: "",
                 userURL: ""))
     }
 }

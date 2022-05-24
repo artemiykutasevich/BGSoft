@@ -12,18 +12,24 @@ struct GalleryView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack {
-                    ForEach(viewModel.newsline) { item in
-                        NavigationLink(destination: DetailView(object: item)) {
-                            PresentationView(object: item)
+            GeometryReader { proxy in
+                ScrollView {
+                    LazyHStack {
+                        TabView {
+                            ForEach(viewModel.newsline, id: \.id) { index in
+                                NavigationLink(destination: DetailView(object: index)) {
+                                    PresentationView(object: index)
+                                }
+                            }
                         }
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                        .tabViewStyle(.page(indexDisplayMode: .never))
                     }
                 }
+                .navigationBarHidden(true)
             }
-            .ignoresSafeArea()
-            .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }
 

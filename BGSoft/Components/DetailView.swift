@@ -21,9 +21,9 @@ struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
         DetailView(
             object: GalleryNewslineModel(
-                id: "dldl",
+                id: "CennImb4CZA",
                 photoURL: "http://dev.bgsoft.biz/task/CennImb4CZA.jpg",
-                userName: "madam",
+                userName: "",
                 userURL: ""))
     }
 }
