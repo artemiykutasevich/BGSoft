@@ -14,17 +14,25 @@ struct GalleryView: View {
         NavigationView {
             GeometryReader { proxy in
                 ScrollView {
-                    LazyHStack {
-                        TabView {
-                            ForEach(viewModel.newsline, id: \.id) { index in
+                    TabView {
+                        ForEach(viewModel.newsline, id: \.id) { index in
+                            GeometryReader { proxy2 in
+                                let minX = proxy2.frame(in: .global).minX
+                                
                                 NavigationLink(destination: DetailView(object: index)) {
                                     PresentationView(object: index)
                                 }
+                                .clipShape(RoundedRectangle(cornerRadius: 32))
+                                .padding()
+                                .scaleEffect(1.0 - abs(minX / proxy.size.width))
+                                .rotation3DEffect(.degrees( minX / -5), axis: (x: 0, y: 1, z: 0))
+                                .shadow(color: .black.opacity(0.5), radius: 8)
+                                .blur(radius: minX / 40)
                             }
                         }
-                        .frame(width: proxy.size.width, height: proxy.size.height)
-                        .tabViewStyle(.page(indexDisplayMode: .never))
                     }
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                 }
                 .navigationBarHidden(true)
             }
