@@ -10,6 +10,9 @@ import SwiftUI
 class GalleryViewModel: ObservableObject {
     @Published var newsline = [GalleryNewslineModel]()
     
+    var selectedItem = 0
+    var tempNewsline = [GalleryNewslineModel]()
+    
     let networkManager = NetworkManager.networkManager
     
     init() {
@@ -22,12 +25,21 @@ class GalleryViewModel: ObservableObject {
                         photoURL: "http://dev.bgsoft.biz/task/\(item.key).jpg",
                         userName: item.value.userName,
                         userURL: item.value.userURL)
-                    self.newsline.append(element)
+                    self.tempNewsline.append(element)
                 }
-                self.newsline = self.newsline.sorted { $0.userName < $1.userName }
+                self.tempNewsline = self.tempNewsline.sorted { $0.userName < $1.userName }
+                self.newsline = self.tempNewsline
             case .failure(let error):
                 print(error.localizedDescription)
             }
         })
+    }
+    
+    func incrementItem() {
+        print("left")
+        selectedItem += 1
+        if selectedItem == newsline.count - 1 {
+            newsline.append(contentsOf: tempNewsline)
+        }
     }
 }

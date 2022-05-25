@@ -21,6 +21,15 @@ struct GalleryView: View {
                                 
                                 NavigationLink(destination: DetailView(object: index)) {
                                     PresentationView(object: index)
+                                        .gesture(DragGesture(minimumDistance: 50.0, coordinateSpace: .local)
+                                            .onEnded { value in
+                                                switch value.translation.width {
+                                                case ...0: viewModel.incrementItem()
+                                                case 0...: print("other swipe")
+                                                default: print("")
+                                                }
+                                            }
+                                        )
                                 }
                                 .clipShape(RoundedRectangle(cornerRadius: 32))
                                 .padding()
